@@ -56,24 +56,21 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  bool      isSELL = true;
  int       timeFrame_AW = 1;
  int       priceVolatility = 0;
- int       总_in_5 = 10;
- uint      总_ui_6 = Lime;
- uint      总_ui_7 = Blue;
- uint      总_ui_8 = Red;
- datetime  总_da_9 = 0;
- bool      总_bo_10 = true;
+ int       fontSize = 10;
+ uint      Yu-E_color = Lime;
+ uint      SL_buy_color = Blue;
+ uint      SL_sell_color = Red;
+ datetime  EA_Working_time_2nd = 0;
  bool      总_bo_11 = false;
  bool      总_bo_12 = false;
- string    总_st_13  =  "";
- string    总_st_14  =  "0-off  1-Candle  2-Fractals  >2-pips";
  int       总_in_15 = 3;
  int       总_in_16 = 20;
  int       总_in_17 = 25;
  int       总_in_18 = 0;
  int       TimeFrame_in_Minutes = 15;
- int       总_in_20 = 0;
+ int       spreadBuffer = 0;
  int       总_in_21 = 346856;
- int       总_in_22 = 0;
+ int       slippage_max = 0;
  double    总_do_23 = 0.0;
  double    总_do_24 = 0.0;
  int       总_in_25 = 1482134400;
@@ -82,7 +79,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  int       总_in_28 = 1;
  int       总_in_29 = 2;
  double    总_do_30 = 10.0;
- uint      总_ui_31 = DimGray;
+ uint      fontColor = DimGray;
  string    总_st_32  =  "Spread";
  int       总_in_33 = 0;
  bool      总_bo_34 = true;
@@ -101,7 +98,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  int       总_in_47 = 25;
  int       总_in_48 = 180;
  bool      总_bo_49 = false;
- string    总_st_50  =  "Amazing3.1";
+ string    EA_Name  =  "Amazing3.1";
  double    总_do_51 = 0.0;
  double    总_do_52 = 0.0;
  int       总_in_53 = 0;
@@ -120,42 +117,35 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  datetime  总_da_66 = 0;
  datetime  总_da_67 = 0;
  datetime  总_da_68 = 0;
- int       总_in_69 = 0;
+ int       orderSendResult = 0;
 
 
  int init ()
  {
- int         子_in_1;
- bool        子_bo_2;
- string      子_st_3;
- int         子_in_4;
-
+ int         EA_fontsize;
 //----------------------------
 
 
-  总_st_50 = WindowExpertName() ;
- 
- 子_in_1 = 0 ;
- 子_bo_2 = false ;
- 子_in_4 = 0 ;
+ EA_fontsize = 0 ;
+
  TimeFrame_in_Minutes = GetTimeFrame_No(TimeFrame_in_Minutes) ;
  if ( ( Digits() == 5 || Digits() == 3 ) )
   {
-  总_in_22 = 30 ;
+  slippage_max = 30 ;
   }
  Comment(""); 
- 总_in_20=MathMax(MarketInfo(Symbol(),33),MarketInfo(Symbol(),14)) + 1;
- if ( Step <  总_in_20 )
+ spreadBuffer=MathMax(MarketInfo(Symbol(),33),MarketInfo(Symbol(),14)) + 1;
+ if ( Step <  spreadBuffer )
   {
-  Step = 总_in_20 ;
+  Step = spreadBuffer ;
   }
- if ( FirstStep <  总_in_20 )
+ if ( FirstStep <  spreadBuffer )
   {
-  FirstStep = 总_in_20 ;
+  FirstStep = spreadBuffer ;
   }
- if ( MinDistance <  总_in_20 )
+ if ( MinDistance <  spreadBuffer )
   {
-  MinDistance = 总_in_20 ;
+  MinDistance = spreadBuffer ;
   }
  if ( 总_bo_34 )
   {
@@ -202,68 +192,50 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
   ObjectSetInteger(0,总_st_37,OBJPROP_SELECTABLE,1); 
   ObjectSetInteger(0,总_st_37,OBJPROP_SELECTED,0); 
   }
- 子_in_1 = 总_in_5 + 总_in_5 / 2;
+ EA_fontsize = fontSize + fontSize / 2;
  ObjectCreate("Balance",OBJ_LABEL,0,0,0.0,0,0.0,0,0.0); 
  ObjectSet("Balance",OBJPROP_CORNER,1.0); 
  ObjectSet("Balance",OBJPROP_XDISTANCE,5.0); 
- ObjectSet("Balance",OBJPROP_YDISTANCE,子_in_1); 
- 子_in_1 = 子_in_1 + 总_in_5 * 2;
+ ObjectSet("Balance",OBJPROP_YDISTANCE,EA_fontsize); 
+ EA_fontsize = EA_fontsize + fontSize * 2;
  ObjectCreate("Equity",OBJ_LABEL,0,0,0.0,0,0.0,0,0.0); 
  ObjectSet("Equity",OBJPROP_CORNER,1.0); 
  ObjectSet("Equity",OBJPROP_XDISTANCE,5.0); 
- ObjectSet("Equity",OBJPROP_YDISTANCE,子_in_1); 
- 子_in_1 = 子_in_1 + 总_in_5 * 2;
+ ObjectSet("Equity",OBJPROP_YDISTANCE,EA_fontsize); 
+ EA_fontsize = EA_fontsize + fontSize * 2;
  ObjectCreate("FreeMargin",OBJ_LABEL,0,0,0.0,0,0.0,0,0.0); 
  ObjectSet("FreeMargin",OBJPROP_CORNER,1.0); 
  ObjectSet("FreeMargin",OBJPROP_XDISTANCE,5.0); 
- ObjectSet("FreeMargin",OBJPROP_YDISTANCE,子_in_1); 
- 子_in_1 = 子_in_1 + 总_in_5 * 2;
+ ObjectSet("FreeMargin",OBJPROP_YDISTANCE,EA_fontsize); 
+ EA_fontsize = EA_fontsize + fontSize * 2;
  ObjectCreate("ProfitB",OBJ_LABEL,0,0,0.0,0,0.0,0,0.0); 
  ObjectSet("ProfitB",OBJPROP_CORNER,1.0); 
  ObjectSet("ProfitB",OBJPROP_XDISTANCE,5.0); 
- ObjectSet("ProfitB",OBJPROP_YDISTANCE,子_in_1); 
- 子_in_1 = 子_in_1 + 总_in_5 * 2;
+ ObjectSet("ProfitB",OBJPROP_YDISTANCE,EA_fontsize); 
+ EA_fontsize = EA_fontsize + fontSize * 2;
  ObjectCreate("ProfitS",OBJ_LABEL,0,0,0.0,0,0.0,0,0.0); 
  ObjectSet("ProfitS",OBJPROP_CORNER,1.0); 
  ObjectSet("ProfitS",OBJPROP_XDISTANCE,5.0); 
- ObjectSet("ProfitS",OBJPROP_YDISTANCE,子_in_1); 
- 子_in_1 = 子_in_1 + 总_in_5 * 2;
+ ObjectSet("ProfitS",OBJPROP_YDISTANCE,EA_fontsize); 
+ EA_fontsize = EA_fontsize + fontSize * 2;
  ObjectCreate("Profit",OBJ_LABEL,0,0,0.0,0,0.0,0,0.0); 
  ObjectSet("Profit",OBJPROP_CORNER,1.0); 
  ObjectSet("Profit",OBJPROP_XDISTANCE,5.0); 
- ObjectSet("Profit",OBJPROP_YDISTANCE,子_in_1); 
- 子_in_1 = 子_in_1 + 总_in_5 * 3;
- 子_bo_2 = false ;
- 子_st_3 = "Paramfalse" ;
+ ObjectSet("Profit",OBJPROP_YDISTANCE,EA_fontsize); 
+ EA_fontsize = EA_fontsize + fontSize * 3;
+
  MaxLossCloseAll = -(MaxLossCloseAll);
  MaxLoss = -(MaxLoss);
  StopLoss = -(StopLoss);
  Money = -(Money);
 
- if ( 总_st_50  !=  WindowExpertName() )
-  {
-  Comment(""); 
-  isBuy = false ;
-  isSELL = false ;
-  ObjectsDeleteAll(-1,-1); 
-  if ( ObjectFind(总_st_32) <  0 )
-   {
-   ObjectCreate(总_st_32,OBJ_LABEL,0,0,0.0,0,0.0,0,0.0); 
-   ObjectSet(总_st_32,OBJPROP_CORNER,1.0); 
-   ObjectSet(总_st_32,OBJPROP_YDISTANCE,260.0); 
-   ObjectSet(总_st_32,OBJPROP_XDISTANCE,10.0); 
-   ObjectSetText(总_st_32,"Spread: " + DoubleToString((Ask - Bid) / 总_do_30,1) + " pips",13,"Arial",总_ui_31); 
-   }
-  ObjectSetText(总_st_32,"Spread: " + DoubleToString((Ask - Bid) / 总_do_30,1) + " pips",0,NULL,0xFFFFFFFF); 
-  WindowRedraw(); 
-  WindowRedraw(); 
-  }
+
  PlaySound("Starting.wav"); 
- StringReplace(EA_StartTime," ",""); 
+ StringReplace(EA_StartTime," ",""); //从 EA_StartTime 中删除所有空格。
  StringReplace(EA_StopTime," ",""); 
- StringTrimLeft(EA_StartTime); 
+ StringTrimLeft(EA_StartTime); //从 EA_StartTime 的开头删除所有空格
  StringTrimLeft(EA_StopTime); 
- StringTrimRight(EA_StartTime); 
+ StringTrimRight(EA_StartTime); //从 EA_StartTime 的末尾删除所有空格
  StringTrimRight(EA_StopTime); 
  if ( EA_StopTime == "24:00" )
   {
@@ -287,25 +259,25 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
 
  int start ()
  {
- bool        子_bo_1;
- double      子_do_2;
+
+ double      order_openprice;
  double      子_do_3;
  double      子_do_4;
- double      子_do_5;
+ double      order_lots_buy;
  double      子_do_6;
- double      子_do_7;
+ double      order_Lots;
  int         子_in_8;
  int         子_in_9;
  int         子_in_10;
  int         子_in_11;
- int         子_in_12;
- int         子_in_13;
+ int         order_Type;
+ int         BuyStop_ticket;
  int         子_in_14;
  double      子_do_15;
  double      子_do_16;
  double      子_do_17;
  double      子_do_18;
- double      子_do_19;
+ double      BuyStop_openprice;
  double      子_do_20;
  double      子_do_21;
  double      子_do_22;
@@ -313,7 +285,6 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  double      子_do_24;
  double      buyReferencePrice;
  double      子_do_26;
- int         子_in_27;
  double      子_do_28;
  string      子_st_29;
  double      子_do_30;
@@ -328,10 +299,10 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  double      子_do_39;
 
 //----------------------------
- datetime   临_da_1;
+ datetime   TimeNow;
  bool       临_bo_2;
- string     临_st_3;
- string     临_st_4;
+ string     fontName;
+ string     LabelText;
  string     临_st_5;
  string     临_st_6;
  datetime   临_da_7;
@@ -485,57 +456,18 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  int        临_in_155;
 
 
- switch(AccountNumber())
-  {
-  case 5320061 :
-   子_bo_1 = true ;
-      break;
-  case 200007738 :
-   子_bo_1 = true ;
-      break;
-  case 10048166 :
-   子_bo_1 = false ;
-      break;
-  case 7061521 :
-   子_bo_1 = false ;
-      break;
-  case 12456 :
-   子_bo_1 = false ;
-      break;
-  default :
-   子_bo_1 = false ;
-  }
- if ( IsDemo() )
-  {
-  子_bo_1 = true ;
-  }
+ TimeNow = 0;
  if ( IsTesting() )
   {
-  子_bo_1 = true ;
-  }
-/* if (1>2 && !(子_bo_1) )
-  {
-  Alert("非法帳戶" + string(AccountNumber()) + "\n" + "请与 QQ 3372807677 联络!"); 
-  isBuy = false ;
-  isSELL = false ;
-  ObjectsDeleteAll(-1,-1); 
-  ExpertRemove(); 
-  WindowRedraw(); 
-  return(0); 
-  }
-  */
- 临_da_1 = 0;
- if ( IsTesting() )
-  {
-  临_da_1 = TimeCurrent();
+  TimeNow = TimeCurrent();
   }
  else
   {
-  临_da_1 = TimeLocal();
+  TimeNow = TimeLocal();
   }
- 总_da_65 = StringToTime(StringConcatenate(TimeYear(临_da_1),".",TimeMonth(临_da_1),".",TimeDay(临_da_1)," ",Limit_StartTime)) ;
- 总_da_66 = StringToTime(StringConcatenate(TimeYear(临_da_1),".",TimeMonth(临_da_1),".",TimeDay(临_da_1)," ",Limit_StopTime)) ;
- if ( 总_da_65 <  总_da_66 && ( 临_da_1 < 总_da_63 || 临_da_1 > 总_da_66 ) )
+ 总_da_65 = StringToTime(StringConcatenate(TimeYear(TimeNow),".",TimeMonth(TimeNow),".",TimeDay(TimeNow)," ",Limit_StartTime)) ;
+ 总_da_66 = StringToTime(StringConcatenate(TimeYear(TimeNow),".",TimeMonth(TimeNow),".",TimeDay(TimeNow)," ",Limit_StopTime)) ;
+ if ( 总_da_65 <  总_da_66 && ( TimeNow < 总_da_63 || TimeNow > 总_da_66 ) )
   {
   ObjectDelete("HLINE_LONG"); 
   ObjectDelete("HLINE_SHORT"); 
@@ -545,7 +477,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
   }
  else
   {
-  if ( 总_da_65 > 总_da_66 && 临_da_1 <  总_da_65 && 临_da_1 > 总_da_66 )
+  if ( 总_da_65 > 总_da_66 && TimeNow <  总_da_65 && TimeNow > 总_da_66 )
    {
    ObjectDelete("HLINE_LONG"); 
    ObjectDelete("HLINE_SHORT"); 
@@ -583,24 +515,24 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
    ObjectSet("HLINE_SHORTII",OBJPROP_STYLE,2.0); 
    ObjectSet("HLINE_SHORTII",OBJPROP_COLOR,16711935.0); 
   }}
- 子_do_2 = 0.0 ;
+ order_openprice = 0.0 ;
  子_do_3 = 0.0 ;
  子_do_4 = 0.0 ;
- 子_do_5 = 0.0 ;
+ order_lots_buy = 0.0 ;
  子_do_6 = 0.0 ;
- 子_do_7 = 0.0 ;
+ order_Lots = 0.0 ;
  子_in_8 = 0 ;
  子_in_9 = 0 ;
  子_in_10 = 0 ;
  子_in_11 = 0 ;
- 子_in_12 = 0 ;
- 子_in_13 = 0 ;
+ order_Type = 0 ;
+ BuyStop_ticket = 0 ;
  子_in_14 = 0 ;
  子_do_15 = 0.0 ;
  子_do_16 = 0.0 ;
  子_do_17 = 0.0 ;
  子_do_18 = 0.0 ;
- 子_do_19 = 0.0 ;
+ BuyStop_openprice = 0.0 ;
  子_do_20 = 0.0 ;
  子_do_21 = 0.0 ;
  子_do_22 = 0.0 ;
@@ -608,64 +540,63 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  子_do_24 = 0.0 ;
  buyReferencePrice = 0.0 ;
  子_do_26 = 0.0 ;
- 子_in_27 = 0 ;
  子_do_28 = 0.0 ;
  子_do_30 = 0.0 ;
  子_do_32 = 0.0 ;
  子_do_33 = 0.0 ;
  子_bo_34 = false ;
- for (子_in_27 = 0 ; 子_in_27 < OrdersTotal() ; 子_in_27 = 子_in_27 + 1)
+ for (int i = 0 ; i < OrdersTotal() ; i = i + 1)
   {
-  if ( !(OrderSelect(子_in_27,SELECT_BY_POS,MODE_TRADES)) || OrderSymbol() != Symbol() || Magic != OrderMagicNumber() )   continue;
-  子_in_12 = OrderType() ;
-  子_do_7 = OrderLots() ;
-  子_do_2 = NormalizeDouble(OrderOpenPrice(),Digits()) ;
-  if ( 子_in_12 == 4 )
+  if ( !(OrderSelect(i,SELECT_BY_POS,MODE_TRADES)) || OrderSymbol() != Symbol() || Magic != OrderMagicNumber() )   continue;
+  order_Type = OrderType() ;
+  order_Lots = OrderLots() ;
+  order_openprice = NormalizeDouble(OrderOpenPrice(),Digits()) ;
+  if ( order_Type == 4 )//OP_BUYSTOP
    {
    子_in_10 = 子_in_10 + 1;
-   if ( ( 子_do_15<子_do_2 || 子_do_15==0.0 ) )
+   if ( ( 子_do_15<order_openprice || 子_do_15==0.0 ) )
     {
-    子_do_15 = 子_do_2 ;
+    子_do_15 = order_openprice ;
     }
-   子_in_13 = OrderTicket() ;
-   子_do_19 = 子_do_2 ;
+   BuyStop_ticket = OrderTicket() ;
+   BuyStop_openprice = order_openprice ;
    }
-  if ( 子_in_12 == 5 )
+  if ( order_Type == 5 )//OP_SELLSTOP
    {
    子_in_11 = 子_in_11 + 1;
-   if ( ( 子_do_18>子_do_2 || 子_do_18==0.0 ) )
+   if ( ( 子_do_18>order_openprice || 子_do_18==0.0 ) )
     {
-    子_do_18 = 子_do_2 ;
+    子_do_18 = order_openprice ;
     }
    子_in_14 = OrderTicket() ;
-   子_do_20 = 子_do_2 ;
+   子_do_20 = order_openprice ;
    }
-  if ( 子_in_12 == 0 )
+  if ( order_Type == 0 )//OP_BUY
    {
    子_in_8 = 子_in_8 + 1;
-   子_do_5 = 子_do_5 + 子_do_7 ;
-   子_do_22 = 子_do_2 * 子_do_7 + 子_do_22 ;
-   if ( ( 子_do_15<子_do_2 || 子_do_15==0.0 ) )
+   order_lots_buy = order_lots_buy + order_Lots ;
+   子_do_22 = order_openprice * order_Lots + 子_do_22 ;
+   if ( ( 子_do_15<order_openprice || 子_do_15==0.0 ) )
     {
-    子_do_15 = 子_do_2 ;
+    子_do_15 = order_openprice ;
     }
-   if ( ( 子_do_16>子_do_2 || 子_do_16==0.0 ) )
+   if ( ( 子_do_16>order_openprice || 子_do_16==0.0 ) )
     {
-    子_do_16 = 子_do_2 ;
+    子_do_16 = order_openprice ;
     }
    子_do_4 = OrderProfit() + OrderSwap() + OrderCommission() + 子_do_4 ;
    }
-  if ( 子_in_12 != 1 )   continue;
+  if ( order_Type != 1 )   continue;
   子_in_9 = 子_in_9 + 1;
-  子_do_6 = 子_do_6 + 子_do_7 ;
-  子_do_21 = 子_do_2 * 子_do_7 + 子_do_21 ;
-  if ( ( 子_do_18>子_do_2 || 子_do_18==0.0 ) )
+  子_do_6 = 子_do_6 + order_Lots ;
+  子_do_21 = order_openprice * order_Lots + 子_do_21 ;
+  if ( ( 子_do_18>order_openprice || 子_do_18==0.0 ) )
    {
-   子_do_18 = 子_do_2 ;
+   子_do_18 = order_openprice ;
    }
-  if ( ( 子_do_17<子_do_2 || 子_do_17==0.0 ) )
+  if ( ( 子_do_17<order_openprice || 子_do_17==0.0 ) )
    {
-   子_do_17 = 子_do_2 ;
+   子_do_17 = order_openprice ;
    }
   子_do_3 = OrderProfit() + OrderSwap() + OrderCommission() + 子_do_3 ;
   }
@@ -693,7 +624,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
   {
   ObjectSetInteger(0,总_st_37,OBJPROP_BGCOLOR,6908265); 
   }
- if ( 子_do_5>0.0 && 子_do_6 / 子_do_5>3.0 && 子_do_6 - 子_do_5>0.2 )
+ if ( order_lots_buy>0.0 && 子_do_6 / order_lots_buy>3.0 && 子_do_6 - order_lots_buy>0.2 )
   {
   总_bo_11 = true ;
   }
@@ -701,7 +632,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
   {
   总_bo_11 = false ;
   }
- if ( 子_do_6>0.0 && 子_do_5 / 子_do_6>3.0 && 子_do_5 - 子_do_6>0.2 )
+ if ( 子_do_6>0.0 && order_lots_buy / 子_do_6>3.0 && order_lots_buy - 子_do_6>0.2 )
   {
   总_bo_12 = true ;
   }
@@ -721,8 +652,8 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
   {
   isBuy = false ;
   isSELL = false ;
-  临_st_3 = "Arial";
-  临_st_4 = "This EA has stop work ! ";
+  fontName = "Arial";
+  LabelText = "This EA has stop work ! ";
   if ( ObjectFind("Stop") == -1 )
    {
    ObjectCreate("Stop",OBJ_LABEL,0,0,0.0,0,0.0,0,0.0); 
@@ -730,7 +661,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
    ObjectSet("Stop",OBJPROP_XDISTANCE,总_in_47); 
    ObjectSet("Stop",OBJPROP_YDISTANCE,总_in_48 + 30); 
    }
-  ObjectSetText("Stop",临_st_4,总_in_5,临_st_3,总_ui_31); 
+  ObjectSetText("Stop",LabelText,fontSize,fontName,fontColor); 
   }
  else
   {
@@ -745,7 +676,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
    ObjectSet("Stop",OBJPROP_XDISTANCE,总_in_47); 
    ObjectSet("Stop",OBJPROP_YDISTANCE,总_in_48 + 30); 
    }
-  ObjectSetText("Stop",临_st_6,总_in_5,临_st_5,总_ui_31); 
+  ObjectSetText("Stop",临_st_6,fontSize,临_st_5,fontColor); 
   }
  临_da_7 = 0;
  if ( IsTesting() )
@@ -783,24 +714,10 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
    ObjectSet("Stop",OBJPROP_XDISTANCE,总_in_47); 
    ObjectSet("Stop",OBJPROP_YDISTANCE,总_in_48 + 30); 
    }
-  ObjectSetText("Stop",临_st_10,总_in_5,临_st_9,总_ui_31); 
+  ObjectSetText("Stop",临_st_10,fontSize,临_st_9,fontColor); 
   }
- if ( 总_st_50  !=  WindowExpertName() )
-  {
-  isBuy = false ;
-  isSELL = false ;
-  临_st_11 = "Arial";
-  临_st_12 = "This EA has stop work ! ";
-  if ( ObjectFind("Stop") == -1 )
-   {
-   ObjectCreate("Stop",OBJ_LABEL,0,0,0.0,0,0.0,0,0.0); 
-   ObjectSet("Stop",OBJPROP_CORNER,总_in_46); 
-   ObjectSet("Stop",OBJPROP_XDISTANCE,总_in_47); 
-   ObjectSet("Stop",OBJPROP_YDISTANCE,总_in_48 + 30); 
-   }
-  ObjectSetText("Stop",临_st_12,总_in_5,临_st_11,总_ui_31); 
-  }
- if ( TimeCurrent() <  总_da_9 )
+
+ if ( TimeCurrent() <  EA_Working_time_2nd )
   {
   临_da_13 = 0;
   if ( IsTesting() )
@@ -840,7 +757,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
     ObjectSet("Stop",OBJPROP_XDISTANCE,总_in_47); 
     ObjectSet("Stop",OBJPROP_YDISTANCE,总_in_48 + 30); 
     }
-   ObjectSetText("Stop",临_st_16,总_in_5,临_st_15,总_ui_31); 
+   ObjectSetText("Stop",临_st_16,fontSize,临_st_15,fontColor); 
   }}
  if ( Over == 1 && 子_in_8 == 0 )
   {
@@ -854,19 +771,19 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  ObjectDelete("SLs"); 
  if ( 子_in_8 > 0 )
   {
-  子_do_23 = NormalizeDouble(子_do_22 / 子_do_5,Digits()) ;
+  子_do_23 = NormalizeDouble(子_do_22 / order_lots_buy,Digits()) ;
   ObjectCreate("SLb",OBJ_ARROW,0,Time[0],子_do_23,0,0.0,0,0.0); 
   ObjectSet("SLb",OBJPROP_ARROWCODE,6.0); 
-  ObjectSet("SLb",OBJPROP_COLOR,总_ui_7); 
+  ObjectSet("SLb",OBJPROP_COLOR,SL_buy_color); 
   }
  if ( 子_in_9 > 0 )
   {
   子_do_24 = NormalizeDouble(子_do_21 / 子_do_6,Digits()) ;
   ObjectCreate("SLs",OBJ_ARROW,0,Time[0],子_do_24,0,0.0,0,0.0); 
   ObjectSet("SLs",OBJPROP_ARROWCODE,6.0); 
-  ObjectSet("SLs",OBJPROP_COLOR,总_ui_8); 
+  ObjectSet("SLs",OBJPROP_COLOR,SL_sell_color); 
   }
- ObjectSetText("Char.op",CharToString(74),总_in_5 + 2,"Wingdings",Red); 
+ ObjectSetText("Char.op",CharToString(74),fontSize + 2,"Wingdings",Red); 
  子_do_39 = 子_do_4 + 子_do_3 ;
  if ( Over == 1 && 子_do_39>=CloseAll )
   {
@@ -1027,7 +944,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
    ObjectSet(总_st_32,OBJPROP_CORNER,1.0); 
    ObjectSet(总_st_32,OBJPROP_YDISTANCE,260.0); 
    ObjectSet(总_st_32,OBJPROP_XDISTANCE,10.0); 
-   ObjectSetText(总_st_32,"Spread: " + DoubleToString((Ask - Bid) / 总_do_30,1) + " pips",13,"Arial",总_ui_31); 
+   ObjectSetText(总_st_32,"Spread: " + DoubleToString((Ask - Bid) / 总_do_30,1) + " pips",13,"Arial",fontColor); 
    }
   ObjectSetText(总_st_32,"Spread: " + DoubleToString((Ask - Bid) / 总_do_30,1) + " pips",0,NULL,0xFFFFFFFF); 
   WindowRedraw(); 
@@ -1069,7 +986,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
    }}
   if ( ( 临_in_47 < 1 || HomeopathyCloseAll == false ) && 子_do_4>MaxLossCloseAll && 子_do_3>MaxLossCloseAll )
    {
-   ObjectSetText("Char.op",CharToString(251),总_in_5 + 2,"Wingdings",Silver); 
+   ObjectSetText("Char.op",CharToString(251),fontSize + 2,"Wingdings",Silver); 
    if ( ( ( Profit == true && 子_do_4>StopProfit * 子_in_8 ) || (Profit == false && 子_do_4>StopProfit) ) )
     {
     Print("Buy Profit ",子_do_4); 
@@ -1264,7 +1181,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
     lizong_7(0); 
     if ( NextTime > 0 )
      {
-     总_da_9=TimeCurrent() + NextTime;
+     EA_Working_time_2nd=TimeCurrent() + NextTime;
      }
     return(0); 
    }}
@@ -1421,7 +1338,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
    lizong_7(0); 
    if ( NextTime > 0 )
     {
-    总_da_9=TimeCurrent() + NextTime;
+    EA_Working_time_2nd=TimeCurrent() + NextTime;
     }
    return(0); 
   }}
@@ -1432,27 +1349,27 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
   lizong_7(0); 
   if ( NextTime > 0 )
    {
-   总_da_9=TimeCurrent() + NextTime;
+   EA_Working_time_2nd=TimeCurrent() + NextTime;
    }
   return(0); 
   }
  if ( 子_do_4<=MaxLoss )
   {
   Comment("Buy"); 
-  ObjectSetText("Char.b",CharToString(225) + CharToString(251),总_in_5,"Wingdings",Red); 
+  ObjectSetText("Char.b",CharToString(225) + CharToString(251),fontSize,"Wingdings",Red); 
   }
  else
   {
-  ObjectSetText("Char.b",CharToString(233),总_in_5,"Wingdings",Lime); 
+  ObjectSetText("Char.b",CharToString(233),fontSize,"Wingdings",Lime); 
   }
  if ( 子_do_3<=MaxLoss )
   {
   Comment("Sell"); 
-  ObjectSetText("Char.s",CharToString(226) + CharToString(251),总_in_5,"Wingdings",Red); 
+  ObjectSetText("Char.s",CharToString(226) + CharToString(251),fontSize,"Wingdings",Red); 
   }
  else
   {
-  ObjectSetText("Char.s",CharToString(234),总_in_5,"Wingdings",Lime); 
+  ObjectSetText("Char.s",CharToString(234),fontSize,"Wingdings",Lime); 
   }
  if ( iOpen(Symbol(),1,0)>iOpen(Symbol(),1,1) )
   {
@@ -1476,14 +1393,14 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  ObjectSet(总_st_32,OBJPROP_CORNER,1.0); 
  ObjectSet(总_st_32,OBJPROP_YDISTANCE,340.0); 
  ObjectSet(总_st_32,OBJPROP_XDISTANCE,10.0); 
- ObjectSetText(总_st_32,子_st_29,13,"Arial",总_ui_31); 
+ ObjectSetText(总_st_32,子_st_29,13,"Arial",fontColor); 
  子_do_30 = AccountLeverage() ;
  子_st_31 = "Lever: " + DoubleToString(子_do_30,0) + " multi" ;
  ObjectCreate(总_st_44,OBJ_LABEL,0,0,0.0,0,0.0,0,0.0); 
  ObjectSet(总_st_44,OBJPROP_CORNER,1.0); 
  ObjectSet(总_st_44,OBJPROP_YDISTANCE,320.0); 
  ObjectSet(总_st_44,OBJPROP_XDISTANCE,10.0); 
- ObjectSetText(总_st_44,子_st_31,13,"Arial",总_ui_31); 
+ ObjectSetText(总_st_44,子_st_31,13,"Arial",fontColor); 
  if ( CloseBuySell == 1 )
   {
   子_do_32 = lizong_10(0,Magic,1,总_in_28) - lizong_10(0,Magic,2,总_in_29) ;
@@ -1511,7 +1428,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
     临_do_111 = OrderProfit();
     临_do_110 = OrderLots();
     }
-   if ( 子_do_5>临_do_110 * 3.0 + 子_do_6 && 子_in_8 > 3 )
+   if ( order_lots_buy>临_do_110 * 3.0 + 子_do_6 && 子_in_8 > 3 )
     {
     lizong_9(0,Magic,总_in_28,1); 
     lizong_9(0,Magic,总_in_29,2); 
@@ -1543,7 +1460,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
     临_do_117 = OrderProfit();
     临_do_116 = OrderLots();
     }
-   if ( 子_do_6>临_do_116 * 3.0 + 子_do_5 && 子_in_9 > 3 )
+   if ( 子_do_6>临_do_116 * 3.0 + order_lots_buy && 子_in_9 > 3 )
     {
     lizong_9(1,Magic,总_in_28,1); 
     lizong_9(1,Magic,总_in_29,2); 
@@ -1585,7 +1502,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
      {
      buyReferencePrice = NormalizeDouble(TwoStep * Point() + Ask,Digits()) ;
     }}
-   if ( ( 子_in_8 == 0 || ( 子_do_15!=0.0 && buyReferencePrice>=NormalizeDouble(Step * Point() + 子_do_15,Digits()) && 总_bo_11 && 子_bo_34 ) || ( 子_do_15!=0.0 && buyReferencePrice>=NormalizeDouble(TwoStep * Point() + 子_do_15,Digits()) && 总_bo_11 && 子_bo_34 == false && Money!=0.0 ) || ( 子_do_16!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_16 - Step * Point(),Digits()) && 子_bo_34 ) || ( 子_do_16!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_16 - TwoStep * Point(),Digits()) && 子_bo_34 == false && Money!=0.0 ) || (Homeopathy && 子_do_15!=0.0 && buyReferencePrice>=NormalizeDouble(Step * Point() + 子_do_15,Digits()) && 子_do_5==子_do_6) ) )
+   if ( ( 子_in_8 == 0 || ( 子_do_15!=0.0 && buyReferencePrice>=NormalizeDouble(Step * Point() + 子_do_15,Digits()) && 总_bo_11 && 子_bo_34 ) || ( 子_do_15!=0.0 && buyReferencePrice>=NormalizeDouble(TwoStep * Point() + 子_do_15,Digits()) && 总_bo_11 && 子_bo_34 == false && Money!=0.0 ) || ( 子_do_16!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_16 - Step * Point(),Digits()) && 子_bo_34 ) || ( 子_do_16!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_16 - TwoStep * Point(),Digits()) && 子_bo_34 == false && Money!=0.0 ) || (Homeopathy && 子_do_15!=0.0 && buyReferencePrice>=NormalizeDouble(Step * Point() + 子_do_15,Digits()) && order_lots_buy==子_do_6) ) )
     {
     if ( 子_in_8 == 0 )
      {
@@ -1599,7 +1516,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
      {
      子_do_26 = Maxlot ;
      }
-    if ( ( ( 子_do_26 * 2.0<AccountFreeMargin() / MarketInfo(Symbol(),32) && 子_in_8 > 0 ) || 总_bo_10 ) )
+    if (  ( 子_do_26 * 2.0<AccountFreeMargin() / MarketInfo(Symbol(),32) && 子_in_8 > 0 )  )
      {
      临_da_119 = 0;
      if ( IsTesting() )
@@ -1819,12 +1736,12 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
          }
         if ( ( ( TimeCurrent() - 临_in_133 >= sleep && OpenMode == 2 ) || OpenMode == 3 || OpenMode == 1 ) )
          {
-         if ( ( ( 子_do_15!=0.0 && buyReferencePrice>=NormalizeDouble(Step * Point() + 子_do_15,Digits()) && 总_bo_11 && 子_bo_34 ) || ( 子_do_15!=0.0 && buyReferencePrice>=NormalizeDouble(TwoStep * Point() + 子_do_15,Digits()) && 总_bo_11 && 子_bo_34 == false && Money!=0.0 ) || (Homeopathy && 子_do_15!=0.0 && buyReferencePrice>=NormalizeDouble(Step * Point() + 子_do_15,Digits()) && 子_do_5==子_do_6) ) )
+         if ( ( ( 子_do_15!=0.0 && buyReferencePrice>=NormalizeDouble(Step * Point() + 子_do_15,Digits()) && 总_bo_11 && 子_bo_34 ) || ( 子_do_15!=0.0 && buyReferencePrice>=NormalizeDouble(TwoStep * Point() + 子_do_15,Digits()) && 总_bo_11 && 子_bo_34 == false && Money!=0.0 ) || (Homeopathy && 子_do_15!=0.0 && buyReferencePrice>=NormalizeDouble(Step * Point() + 子_do_15,Digits()) && order_lots_buy==子_do_6) ) )
           {
-          总_in_69 = OrderSend(Symbol(),OP_BUYSTOP,子_do_26,buyReferencePrice,总_in_22,0.0,0.0,"SS",Magic,0,Blue) ;
-          if ( 总_in_69 > 0 )
+          orderSendResult = OrderSend(Symbol(),OP_BUYSTOP,子_do_26,buyReferencePrice,slippage_max,0.0,0.0,"SS",Magic,0,Blue) ;
+          if ( orderSendResult > 0 )
            {
-           Print(Symbol() + "开单成功，订单编号:" + DoubleToString(总_in_69,0)); 
+           Print(Symbol() + "开单成功，订单编号:" + DoubleToString(orderSendResult,0)); 
            }
           else
            {
@@ -1832,10 +1749,10 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
           }}
          else
           {
-          总_in_69 = OrderSend(Symbol(),OP_BUYSTOP,子_do_26,buyReferencePrice,总_in_22,0.0,0.0,"NN",Magic,0,Blue) ;
-          if ( 总_in_69 > 0 )
+          orderSendResult = OrderSend(Symbol(),OP_BUYSTOP,子_do_26,buyReferencePrice,slippage_max,0.0,0.0,"NN",Magic,0,Blue) ;
+          if ( orderSendResult > 0 )
            {
-           Print(Symbol() + "开单成功，订单编号:" + DoubleToString(总_in_69,0)); 
+           Print(Symbol() + "开单成功，订单编号:" + DoubleToString(orderSendResult,0)); 
            }
           else
            {
@@ -1870,7 +1787,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
       {
       buyReferencePrice = NormalizeDouble(Bid - TwoStep * Point(),Digits()) ;
      }}
-    if ( ( 子_in_9 == 0 || ( 子_do_18!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_18 - Step * Point(),Digits()) && 总_bo_12 && 子_bo_34 ) || ( 子_do_18!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_18 - TwoStep * Point(),Digits()) && 总_bo_12 && 子_bo_34 == false && Money!=0.0 ) || ( 子_do_17!=0.0 && buyReferencePrice>=NormalizeDouble(Step * Point() + 子_do_17,Digits()) && 子_bo_34 ) || ( 子_do_17!=0.0 && buyReferencePrice>=NormalizeDouble(TwoStep * Point() + 子_do_17,Digits()) && 子_bo_34 == false && Money!=0.0 ) || (Homeopathy && 子_do_18!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_18 - Step * Point(),Digits()) && 子_do_5==子_do_6) ) )
+    if ( ( 子_in_9 == 0 || ( 子_do_18!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_18 - Step * Point(),Digits()) && 总_bo_12 && 子_bo_34 ) || ( 子_do_18!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_18 - TwoStep * Point(),Digits()) && 总_bo_12 && 子_bo_34 == false && Money!=0.0 ) || ( 子_do_17!=0.0 && buyReferencePrice>=NormalizeDouble(Step * Point() + 子_do_17,Digits()) && 子_bo_34 ) || ( 子_do_17!=0.0 && buyReferencePrice>=NormalizeDouble(TwoStep * Point() + 子_do_17,Digits()) && 子_bo_34 == false && Money!=0.0 ) || (Homeopathy && 子_do_18!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_18 - Step * Point(),Digits()) && order_lots_buy==子_do_6) ) )
      {
      if ( 子_in_9 == 0 )
       {
@@ -1884,7 +1801,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
       {
       子_do_26 = Maxlot ;
       }
-     if ( ( ( 子_do_26 * 2.0<AccountFreeMargin() / MarketInfo(Symbol(),32) && 子_in_9 > 0 ) || 总_bo_10 ) )
+     if (  ( 子_do_26 * 2.0<AccountFreeMargin() / MarketInfo(Symbol(),32) && 子_in_9 > 0 )  )
       {
       临_da_136 = 0;
       if ( IsTesting() )
@@ -2103,12 +2020,12 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
           }
          if ( ( ( TimeCurrent() - 临_in_150 >= sleep && OpenMode == 2 ) || OpenMode == 3 || OpenMode == 1 ) )
           {
-          if ( ( ( 子_do_18!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_18 - Step * Point(),Digits()) && 总_bo_12 && 子_bo_34 ) || ( 子_do_18!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_18 - TwoStep * Point(),Digits()) && 总_bo_12 && 子_bo_34 == false && Money!=0.0 ) || (Homeopathy && 子_do_18!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_18 - Step * Point(),Digits()) && 子_do_5==子_do_6) ) )
+          if ( ( ( 子_do_18!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_18 - Step * Point(),Digits()) && 总_bo_12 && 子_bo_34 ) || ( 子_do_18!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_18 - TwoStep * Point(),Digits()) && 总_bo_12 && 子_bo_34 == false && Money!=0.0 ) || (Homeopathy && 子_do_18!=0.0 && buyReferencePrice<=NormalizeDouble(子_do_18 - Step * Point(),Digits()) && order_lots_buy==子_do_6) ) )
            {
-           总_in_69 = OrderSend(Symbol(),OP_SELLSTOP,子_do_26,buyReferencePrice,总_in_22,0.0,0.0,"SS",Magic,0,Red) ;
-           if ( 总_in_69 > 0 )
+           orderSendResult = OrderSend(Symbol(),OP_SELLSTOP,子_do_26,buyReferencePrice,slippage_max,0.0,0.0,"SS",Magic,0,Red) ;
+           if ( orderSendResult > 0 )
             {
-            Print(Symbol() + "开单成功，订单编号:" + DoubleToString(总_in_69,0)); 
+            Print(Symbol() + "开单成功，订单编号:" + DoubleToString(orderSendResult,0)); 
             }
            else
             {
@@ -2116,10 +2033,10 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
            }}
           else
            {
-           总_in_69 = OrderSend(Symbol(),OP_SELLSTOP,子_do_26,buyReferencePrice,总_in_22,0.0,0.0,"NN",Magic,0,Red) ;
-           if ( 总_in_69 > 0 )
+           orderSendResult = OrderSend(Symbol(),OP_SELLSTOP,子_do_26,buyReferencePrice,slippage_max,0.0,0.0,"NN",Magic,0,Red) ;
+           if ( orderSendResult > 0 )
             {
-            Print(Symbol() + "开单成功，订单编号:" + DoubleToString(总_in_69,0)); 
+            Print(Symbol() + "开单成功，订单编号:" + DoubleToString(orderSendResult,0)); 
             }
            else
             {
@@ -2131,11 +2048,11 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
      }}}
     总_da_62 = iTime(NULL,TimeZone,0) ;
     }
-   ObjectSetText("Balance",StringConcatenate("馀额 ",DoubleToString(AccountBalance(),2)),总_in_5,"Arial",总_ui_6); 
-   ObjectSetText("Equity",StringConcatenate("淨值 ",DoubleToString(AccountEquity(),2)),总_in_5,"Arial",总_ui_6); 
-   ObjectSetText("FreeMargin",StringConcatenate("可用保证金 ",DoubleToString(AccountFreeMargin(),2)),总_in_5,"Arial",总_ui_6); 
+   ObjectSetText("Balance",StringConcatenate("馀额 ",DoubleToString(AccountBalance(),2)),fontSize,"Arial",Yu-E_color); 
+   ObjectSetText("Equity",StringConcatenate("淨值 ",DoubleToString(AccountEquity(),2)),fontSize,"Arial",Yu-E_color); 
+   ObjectSetText("FreeMargin",StringConcatenate("可用保证金 ",DoubleToString(AccountFreeMargin(),2)),fontSize,"Arial",Yu-E_color); 
    子_do_33 = 子_do_4 + 子_do_3 ;
-   if ( 子_do_5>0.0 )
+   if ( order_lots_buy>0.0 )
     {
     if ( 子_do_4>0.0 )
      {
@@ -2145,11 +2062,11 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
      {
      临_in_153 = 65280;
      }
-    ObjectSetText("ProfitB",StringConcatenate("Buy ",子_in_8,"单 , ",DoubleToString(子_do_5,2),"手,  盈亏= ",DoubleToString(子_do_4,2)),总_in_5,"Arial",临_in_153); 
+    ObjectSetText("ProfitB",StringConcatenate("Buy ",子_in_8,"单 , ",DoubleToString(order_lots_buy,2),"手,  盈亏= ",DoubleToString(子_do_4,2)),fontSize,"Arial",临_in_153); 
     }
    else
     {
-    ObjectSetText("ProfitB","",总_in_5,"Arial",Gray); 
+    ObjectSetText("ProfitB","",fontSize,"Arial",Gray); 
     }
    if ( 子_do_6>0.0 )
     {
@@ -2161,13 +2078,13 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
      {
      临_in_154 = 65280;
      }
-    ObjectSetText("ProfitS",StringConcatenate("Sell ",子_in_9,"单 , ",DoubleToString(子_do_6,2),"手,  盈亏= ",DoubleToString(子_do_3,2)),总_in_5,"Arial",临_in_154); 
+    ObjectSetText("ProfitS",StringConcatenate("Sell ",子_in_9,"单 , ",DoubleToString(子_do_6,2),"手,  盈亏= ",DoubleToString(子_do_3,2)),fontSize,"Arial",临_in_154); 
     }
    else
     {
-    ObjectSetText("ProfitS","",总_in_5,"Arial",Gray); 
+    ObjectSetText("ProfitS","",fontSize,"Arial",Gray); 
     }
-   if ( 子_do_6 + 子_do_5>0.0 )
+   if ( 子_do_6 + order_lots_buy>0.0 )
     {
     if ( 子_do_33>0.0 )
      {
@@ -2177,13 +2094,13 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
      {
      临_in_155 = 65280;
      }
-    ObjectSetText("Profit",StringConcatenate("总盈亏= ",DoubleToString(子_do_33,2)),总_in_5,"Arial",临_in_155); 
+    ObjectSetText("Profit",StringConcatenate("总盈亏= ",DoubleToString(子_do_33,2)),fontSize,"Arial",临_in_155); 
     }
    else
     {
-    ObjectSetText("Profit","",总_in_5,"Arial",White); 
+    ObjectSetText("Profit","",fontSize,"Arial",White); 
     }
-   if ( 子_do_19!=0.0 && isBuy )
+   if ( BuyStop_openprice!=0.0 && isBuy )
     {
     if ( 子_in_8 == 0 )
      {
@@ -2197,15 +2114,15 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
      {
      buyReferencePrice = NormalizeDouble(TwoMinDistance * Point() + Ask,Digits()) ;
      }
-    if ( NormalizeDouble(子_do_19 - StepTrallOrders * Point(),Digits())>buyReferencePrice && ( ( ( buyReferencePrice<=NormalizeDouble(子_do_16 - Step * Point(),Digits()) || 子_do_16==0.0 || ( 总_bo_11 && 子_in_8 == 0 ) || buyReferencePrice>=NormalizeDouble(Step * Point() + 子_do_15,Digits()) || buyReferencePrice<=NormalizeDouble(子_do_16 - Step * Point(),Digits()) ) && 子_bo_34 ) || (( buyReferencePrice<=NormalizeDouble(子_do_16 - TwoStep * Point(),Digits()) || 子_do_16==0.0 || ( 总_bo_11 && 子_in_8 == 0 ) || buyReferencePrice>=NormalizeDouble(TwoStep * Point() + 子_do_15,Digits()) || buyReferencePrice<=NormalizeDouble(子_do_16 - TwoStep * Point(),Digits()) ) && 子_bo_34 == false && Money!=0.0) ) )
+    if ( NormalizeDouble(BuyStop_openprice - StepTrallOrders * Point(),Digits())>buyReferencePrice && ( ( ( buyReferencePrice<=NormalizeDouble(子_do_16 - Step * Point(),Digits()) || 子_do_16==0.0 || ( 总_bo_11 && 子_in_8 == 0 ) || buyReferencePrice>=NormalizeDouble(Step * Point() + 子_do_15,Digits()) || buyReferencePrice<=NormalizeDouble(子_do_16 - Step * Point(),Digits()) ) && 子_bo_34 ) || (( buyReferencePrice<=NormalizeDouble(子_do_16 - TwoStep * Point(),Digits()) || 子_do_16==0.0 || ( 总_bo_11 && 子_in_8 == 0 ) || buyReferencePrice>=NormalizeDouble(TwoStep * Point() + 子_do_15,Digits()) || buyReferencePrice<=NormalizeDouble(子_do_16 - TwoStep * Point(),Digits()) ) && 子_bo_34 == false && Money!=0.0) ) )
      {
-     if ( !(OrderModify(子_in_13,buyReferencePrice,0.0,0.0,0,White)) )
+     if ( !(OrderModify(BuyStop_ticket,buyReferencePrice,0.0,0.0,0,White)) )
       {
-      Print("Error ",GetLastError(),"   Order Modify Buy   OOP ",子_do_19,"->",buyReferencePrice); 
+      Print("Error ",GetLastError(),"   Order Modify Buy   OOP ",BuyStop_openprice,"->",buyReferencePrice); 
       }
      else
       {
-      Print("Order Buy Modify   OOP ",子_do_2,"->",buyReferencePrice); 
+      Print("Order Buy Modify   OOP ",order_openprice,"->",buyReferencePrice); 
     }}}
    if ( 子_do_20!=0.0 && isSELL )
     {
@@ -2229,7 +2146,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
       }
      else
       {
-      Print("Order Sell Modify   OOP ",子_do_2,"->",buyReferencePrice); 
+      Print("Order Sell Modify   OOP ",order_openprice,"->",buyReferencePrice); 
     }}}
    return(0); 
    }
@@ -2238,7 +2155,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
 
    void OnChartEvent (const int TimeFrame_inNo,const long &MagicNumber_set,const double &木_2,const string &木_3)
    {
- int         子_in_1;
+ int         EA_fontsize;
  int         子_in_2;
  int         子_in_3;
  int         子_in_4;
@@ -2252,7 +2169,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  string     临_st_1;
  int        临_in_2;
  int        临_in_3;
- string     临_st_4;
+ string     LabelText;
  int        临_in_5;
  int        临_in_6;
  string     临_st_7;
@@ -2295,7 +2212,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
   临_in_2 = 0;
   for (临_in_3 = OrdersTotal() - 1 ; 临_in_3 >= 0 ; 临_in_3 = 临_in_3 - 1)
    {
-   总_in_69 = OrderSelect(临_in_3,SELECT_BY_POS,MODE_TRADES) ;
+   orderSendResult = OrderSelect(临_in_3,SELECT_BY_POS,MODE_TRADES) ;
    if ( OrderSymbol() != Symbol() || OrderMagicNumber() != Magic || OrderSymbol() != Symbol() || OrderMagicNumber() != Magic )   continue;
    
    if ( 临_st_1 == "buy" && OrderType() == 0 )
@@ -2315,7 +2232,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
    }
   if ( 临_in_2 > 0 )
    {
-   子_in_1 = 0 ;
+   EA_fontsize = 0 ;
    if ( 木_3 == "Button1" && 总_bo_34 == 1 )
     {
     子_in_2 = MessageBox("点击确定(Y)表示将全部平多单!是否继续?","友情提醒：",52) ;
@@ -2323,43 +2240,43 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
      {
      for (子_in_3 = OrdersTotal() - 1 ; 子_in_3 >= 0 ; 子_in_3 = 子_in_3 - 1)
       {
-      总_in_69 = OrderSelect(子_in_3,SELECT_BY_POS,MODE_TRADES) ;
+      orderSendResult = OrderSelect(子_in_3,SELECT_BY_POS,MODE_TRADES) ;
       if ( OrderSymbol() != Symbol() || OrderMagicNumber() != Magic )   continue;
       
       if ( OrderType() == 0 )
        {
-       子_in_1 = OrderClose(OrderTicket(),OrderLots(),MarketInfo(OrderSymbol(),9),5,Red) ;
+       EA_fontsize = OrderClose(OrderTicket(),OrderLots(),MarketInfo(OrderSymbol(),9),5,Red) ;
        }
       if ( OrderType() == 4 )
        {
-       总_in_69 = OrderDelete(OrderTicket(),0xFFFFFFFF) ;
+       orderSendResult = OrderDelete(OrderTicket(),0xFFFFFFFF) ;
        }
-      if ( 子_in_1 <= 0 )   continue;
+      if ( EA_fontsize <= 0 )   continue;
       PlaySound("ok.wav"); 
       }
    }}}}
  if ( TimeFrame_inNo == 1 )
   {
-  临_st_4 = "sell";
+  LabelText = "sell";
   临_in_5 = 0;
   for (临_in_6 = OrdersTotal() - 1 ; 临_in_6 >= 0 ; 临_in_6 = 临_in_6 - 1)
    {
-   总_in_69 = OrderSelect(临_in_6,SELECT_BY_POS,MODE_TRADES) ;
+   orderSendResult = OrderSelect(临_in_6,SELECT_BY_POS,MODE_TRADES) ;
    if ( OrderSymbol() != Symbol() || OrderMagicNumber() != Magic || OrderSymbol() != Symbol() || OrderMagicNumber() != Magic )   continue;
    
-   if ( 临_st_4 == "buy" && OrderType() == 0 )
+   if ( LabelText == "buy" && OrderType() == 0 )
     {
     临_in_5 = 临_in_5 + 1;
     }
-   if ( 临_st_4 == "sell" && OrderType() == 1 )
+   if ( LabelText == "sell" && OrderType() == 1 )
     {
     临_in_5 = 临_in_5 + 1;
     }
-   if ( 临_st_4 == "buystop" && OrderType() == 4 )
+   if ( LabelText == "buystop" && OrderType() == 4 )
     {
     临_in_5 = 临_in_5 + 1;
     }
-   if ( 临_st_4 != "sellstop" || OrderType() != 5 )   continue;
+   if ( LabelText != "sellstop" || OrderType() != 5 )   continue;
    临_in_5 = 临_in_5 + 1;
    }
   if ( 临_in_5 > 0 )
@@ -2372,7 +2289,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
      {
      for (子_in_6 = OrdersTotal() - 1 ; 子_in_6 >= 0 ; 子_in_6 = 子_in_6 - 1)
       {
-      总_in_69 = OrderSelect(子_in_6,SELECT_BY_POS,MODE_TRADES) ;
+      orderSendResult = OrderSelect(子_in_6,SELECT_BY_POS,MODE_TRADES) ;
       if ( OrderSymbol() != Symbol() || OrderMagicNumber() != Magic )   continue;
       
       if ( OrderType() == 1 )
@@ -2381,7 +2298,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
        }
       if ( OrderType() == 5 )
        {
-       总_in_69 = OrderDelete(OrderTicket(),0xFFFFFFFF) ;
+       orderSendResult = OrderDelete(OrderTicket(),0xFFFFFFFF) ;
        }
       if ( 子_in_4 <= 0 )   continue;
       PlaySound("ok.wav"); 
@@ -2392,7 +2309,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  临_in_8 = 0;
  for (临_in_9 = OrdersTotal() - 1 ; 临_in_9 >= 0 ; 临_in_9 = 临_in_9 - 1)
   {
-  总_in_69 = OrderSelect(临_in_9,SELECT_BY_POS,MODE_TRADES) ;
+  orderSendResult = OrderSelect(临_in_9,SELECT_BY_POS,MODE_TRADES) ;
   if ( OrderSymbol() != Symbol() || OrderMagicNumber() != Magic || OrderSymbol() != Symbol() || OrderMagicNumber() != Magic )   continue;
   
   if ( 临_st_7 == "buy" && OrderType() == 0 )
@@ -2415,7 +2332,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  临_in_12 = 0;
  for (临_in_13 = OrdersTotal() - 1 ; 临_in_13 >= 0 ; 临_in_13 = 临_in_13 - 1)
   {
-  总_in_69 = OrderSelect(临_in_13,SELECT_BY_POS,MODE_TRADES) ;
+  orderSendResult = OrderSelect(临_in_13,SELECT_BY_POS,MODE_TRADES) ;
   if ( OrderSymbol() != Symbol() || OrderMagicNumber() != Magic || OrderSymbol() != Symbol() || OrderMagicNumber() != Magic )   continue;
   
   if ( 临_st_11 == "buy" && OrderType() == 0 )
@@ -2588,7 +2505,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
   }
  for (子_in_9 = OrdersTotal() - 1 ; 子_in_9 >= 0 ; 子_in_9 = 子_in_9 - 1)
   {
-  总_in_69 = OrderSelect(子_in_9,SELECT_BY_POS,MODE_TRADES) ;
+  orderSendResult = OrderSelect(子_in_9,SELECT_BY_POS,MODE_TRADES) ;
   if ( OrderSymbol() != Symbol() || OrderMagicNumber() != Magic )   continue;
   
   if ( OrderType() == 0 )
@@ -2601,7 +2518,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
    }
   if ( ( OrderType() == 4 || OrderType() == 5 ) )
    {
-   总_in_69 = OrderDelete(OrderTicket(),0xFFFFFFFF) ;
+   orderSendResult = OrderDelete(OrderTicket(),0xFFFFFFFF) ;
    }
   if ( 子_in_7 <= 0 )   continue;
   PlaySound("ok.wav"); 
@@ -2627,7 +2544,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
 
  int lizong_7 (int TimeFrame_inNo)
  {
- int         子_in_1;
+ int         EA_fontsize;
  int         子_in_2;
  int         子_in_3;
  int         子_in_4;
@@ -2647,14 +2564,14 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
    子_in_3 = OrderType() ;
    if ( 子_in_3 == 0 && ( TimeFrame_inNo == 1 || TimeFrame_inNo == 0 ) )
     {
-    子_bo_5 = OrderClose(OrderTicket(),OrderLots(),NormalizeDouble(Bid,Digits()),总_in_22,Blue) ;
+    子_bo_5 = OrderClose(OrderTicket(),OrderLots(),NormalizeDouble(Bid,Digits()),slippage_max,Blue) ;
     if ( 子_bo_5 )
      {
      Comment("",OrderTicket(),"",OrderProfit(),"     ",TimeToString(TimeCurrent(),TIME_SECONDS)); 
     }}
    if ( 子_in_3 == 1 && ( TimeFrame_inNo == -1 || TimeFrame_inNo == 0 ) )
     {
-    子_bo_5 = OrderClose(OrderTicket(),OrderLots(),NormalizeDouble(Ask,Digits()),总_in_22,Red) ;
+    子_bo_5 = OrderClose(OrderTicket(),OrderLots(),NormalizeDouble(Ask,Digits()),slippage_max,Red) ;
     if ( 子_bo_5 )
      {
      Comment("",OrderTicket(),"",OrderProfit(),"     ",TimeToString(TimeCurrent(),TIME_SECONDS)); 
@@ -2668,22 +2585,22 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
     子_bo_5 = OrderDelete(OrderTicket(),0xFFFFFFFF) ;
     }
    if ( 子_bo_5 )   continue;
-   子_in_1 = GetLastError() ;
-   if ( 子_in_1 < 2 )   continue;
+   EA_fontsize = GetLastError() ;
+   if ( EA_fontsize < 2 )   continue;
    
-   if ( 子_in_1 == 129 )
+   if ( EA_fontsize == 129 )
     {
     Comment("",TimeToString(TimeCurrent(),TIME_SECONDS)); 
     RefreshRates(); 
      continue;
     }
-   if ( 子_in_1 == 146 )
+   if ( EA_fontsize == 146 )
     {
     if ( !(IsTradeContextBusy()) )   continue;
     Sleep(2000); 
      continue;
     }
-   Comment("",子_in_1,"",OrderTicket(),"     ",TimeToString(TimeCurrent(),TIME_SECONDS)); 
+   Comment("",EA_fontsize,"",OrderTicket(),"     ",TimeToString(TimeCurrent(),TIME_SECONDS)); 
    }
   子_in_4 = 0 ;
   for (子_in_6 = 0 ; 子_in_6 < OrdersTotal() ; 子_in_6 = 子_in_6 + 1)
@@ -2826,7 +2743,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  double lizong_10 (int TimeFrame_inNo,int MagicNumber_set,int 木_2,int 木_3)
  {
  double      子_x[100];
- int         子_in_1;
+ int         EA_fontsize;
  int         子_in_2;
  double      子_do_3;
 
@@ -2835,19 +2752,19 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  子_in_2 = 0 ;
  子_do_3 = 0.0 ;
  ArrayInitialize(子_x,0.0); 
- 子_in_1 = 0 ;
+ EA_fontsize = 0 ;
  for (子_in_2 = OrdersTotal() - 1 ; 子_in_2 >= 0 ; 子_in_2 = 子_in_2 - 1)
   {
   if ( !(OrderSelect(子_in_2,SELECT_BY_POS,MODE_TRADES)) || OrderSymbol() != Symbol() || ( OrderMagicNumber()  !=  MagicNumber_set && MagicNumber_set != -1 ) || ( OrderType()  !=  TimeFrame_inNo && TimeFrame_inNo != -100 ) )   continue;
   
   if ( 木_2 == 1 && OrderProfit()>=0.0 )
    {
-   子_x[子_in_1] = OrderProfit();
-   子_in_1 = 子_in_1 + 1;
+   子_x[EA_fontsize] = OrderProfit();
+   EA_fontsize = EA_fontsize + 1;
    }
   if ( 木_2 != 2 || !(OrderProfit()<0.0) )   continue;
-  子_x[子_in_1] =  -(OrderProfit());
-  子_in_1 = 子_in_1 + 1;
+  子_x[EA_fontsize] =  -(OrderProfit());
+  EA_fontsize = EA_fontsize + 1;
   }
  ArraySort(子_x,0,0,2); 
  子_do_3 = 0.0 ;
