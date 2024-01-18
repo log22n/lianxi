@@ -113,8 +113,8 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  datetime  总_da_62 = 0;
  datetime  总_da_63 = 0;
  datetime  总_da_64 = 0;
- datetime  总_da_65 = 0;
- datetime  总_da_66 = 0;
+ datetime  EA_StartTime = 0;
+ datetime  EA_StopTime = 0;
  datetime  总_da_67 = 0;
  datetime  总_da_68 = 0;
  int       orderSendResult = 0;
@@ -445,12 +445,11 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
  datetime   临_da_144;
  bool       临_bo_145;
  datetime   临_da_146;
- bool       临_bo_147;
+ bool       EA_in_working_time;
  int        临_in_148;
  int        临_in_149;
  int        临_in_150;
  int        临_in_151;
- int        临_in_152;
  int        临_in_153;
  int        临_in_154;
  int        临_in_155;
@@ -465,9 +464,9 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
   {
   TimeNow = TimeLocal();
   }
- 总_da_65 = StringToTime(StringConcatenate(TimeYear(TimeNow),".",TimeMonth(TimeNow),".",TimeDay(TimeNow)," ",Limit_StartTime)) ;
- 总_da_66 = StringToTime(StringConcatenate(TimeYear(TimeNow),".",TimeMonth(TimeNow),".",TimeDay(TimeNow)," ",Limit_StopTime)) ;
- if ( 总_da_65 <  总_da_66 && ( TimeNow < 总_da_63 || TimeNow > 总_da_66 ) )
+ EA_StartTime = StringToTime(StringConcatenate(TimeYear(TimeNow),".",TimeMonth(TimeNow),".",TimeDay(TimeNow)," ",Limit_StartTime)) ;
+ EA_StopTime = StringToTime(StringConcatenate(TimeYear(TimeNow),".",TimeMonth(TimeNow),".",TimeDay(TimeNow)," ",Limit_StopTime)) ;
+ if ( EA_StartTime <  EA_StopTime && ( TimeNow < 总_da_63 || TimeNow > EA_StopTime ) )
   {
   ObjectDelete("HLINE_LONG"); 
   ObjectDelete("HLINE_SHORT"); 
@@ -477,7 +476,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
   }
  else
   {
-  if ( 总_da_65 > 总_da_66 && TimeNow <  总_da_65 && TimeNow > 总_da_66 )
+  if ( EA_StartTime > EA_StopTime && TimeNow <  EA_StartTime && TimeNow > EA_StopTime )
    {
    ObjectDelete("HLINE_LONG"); 
    ObjectDelete("HLINE_SHORT"); 
@@ -1555,9 +1554,9 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
        {
        临_da_121 = TimeLocal();
        }
-      总_da_65 = StringToTime(StringConcatenate(TimeYear(临_da_121),".",TimeMonth(临_da_121),".",TimeDay(临_da_121)," ",Limit_StartTime)) ;
-      总_da_66 = StringToTime(StringConcatenate(TimeYear(临_da_121),".",TimeMonth(临_da_121),".",TimeDay(临_da_121)," ",Limit_StopTime)) ;
-      if ( 总_da_65 <  总_da_66 && ( 临_da_121 < 总_da_63 || 临_da_121 > 总_da_66 ) )
+      EA_StartTime = StringToTime(StringConcatenate(TimeYear(临_da_121),".",TimeMonth(临_da_121),".",TimeDay(临_da_121)," ",Limit_StartTime)) ;
+      EA_StopTime = StringToTime(StringConcatenate(TimeYear(临_da_121),".",TimeMonth(临_da_121),".",TimeDay(临_da_121)," ",Limit_StopTime)) ;
+      if ( EA_StartTime <  EA_StopTime && ( 临_da_121 < 总_da_63 || 临_da_121 > EA_StopTime ) )
        {
        ObjectDelete("HLINE_LONG"); 
        ObjectDelete("HLINE_SHORT"); 
@@ -1567,7 +1566,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
        }
       else
        {
-       if ( 总_da_65 > 总_da_66 && 临_da_121 <  总_da_65 && 临_da_121 > 总_da_66 )
+       if ( EA_StartTime > EA_StopTime && 临_da_121 <  EA_StartTime && 临_da_121 > EA_StopTime )
         {
         ObjectDelete("HLINE_LONG"); 
         ObjectDelete("HLINE_SHORT"); 
@@ -1589,10 +1588,10 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
        {
        临_da_123 = TimeLocal();
        }
-      总_da_65 = StringToTime(StringConcatenate(TimeYear(临_da_123),".",TimeMonth(临_da_123),".",TimeDay(临_da_123)," ",Limit_StartTime)) ;
-      总_da_66 = StringToTime(StringConcatenate(TimeYear(临_da_123),".",TimeMonth(临_da_123),".",TimeDay(临_da_123)," ",Limit_StopTime)) ;
+      EA_StartTime = StringToTime(StringConcatenate(TimeYear(临_da_123),".",TimeMonth(临_da_123),".",TimeDay(临_da_123)," ",Limit_StartTime)) ;
+      EA_StopTime = StringToTime(StringConcatenate(TimeYear(临_da_123),".",TimeMonth(临_da_123),".",TimeDay(临_da_123)," ",Limit_StopTime)) ;
       
-      if ( 总_da_65 <  总_da_66 && ( 临_da_123 < 总_da_63 || 临_da_123 > 总_da_66 ) )
+      if ( EA_StartTime <  EA_StopTime && ( 临_da_123 < 总_da_63 || 临_da_123 > EA_StopTime ) )
        {
        ObjectDelete("HLINE_LONG"); 
        ObjectDelete("HLINE_SHORT"); 
@@ -1602,7 +1601,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
        }
       else
        {
-       if ( 总_da_65 > 总_da_66 && 临_da_123 <  总_da_65 && 临_da_123 > 总_da_66 )
+       if ( EA_StartTime > EA_StopTime && 临_da_123 <  EA_StartTime && 临_da_123 > EA_StopTime )
         {
         ObjectDelete("HLINE_LONG"); 
         ObjectDelete("HLINE_SHORT"); 
@@ -1625,9 +1624,9 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
         {
         临_da_125 = TimeLocal();
         }
-       总_da_65 = StringToTime(StringConcatenate(TimeYear(临_da_125),".",TimeMonth(临_da_125),".",TimeDay(临_da_125)," ",Limit_StartTime)) ;
-       总_da_66 = StringToTime(StringConcatenate(TimeYear(临_da_125),".",TimeMonth(临_da_125),".",TimeDay(临_da_125)," ",Limit_StopTime)) ;
-       if ( 总_da_65 <  总_da_66 && ( 临_da_125 < 总_da_63 || 临_da_125 > 总_da_66 ) )
+       EA_StartTime = StringToTime(StringConcatenate(TimeYear(临_da_125),".",TimeMonth(临_da_125),".",TimeDay(临_da_125)," ",Limit_StartTime)) ;
+       EA_StopTime = StringToTime(StringConcatenate(TimeYear(临_da_125),".",TimeMonth(临_da_125),".",TimeDay(临_da_125)," ",Limit_StopTime)) ;
+       if ( EA_StartTime <  EA_StopTime && ( 临_da_125 < 总_da_63 || 临_da_125 > EA_StopTime ) )
         {
         ObjectDelete("HLINE_LONG"); 
         ObjectDelete("HLINE_SHORT"); 
@@ -1637,7 +1636,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
         }
        else
         {
-        if ( 总_da_65 > 总_da_66 && 临_da_125 <  总_da_65 && 临_da_125 > 总_da_66 )
+        if ( EA_StartTime > EA_StopTime && 临_da_125 <  EA_StartTime && 临_da_125 > EA_StopTime )
          {
          ObjectDelete("HLINE_LONG"); 
          ObjectDelete("HLINE_SHORT"); 
@@ -1662,9 +1661,9 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
         {
         临_da_127 = TimeLocal();
         }
-       总_da_65 = StringToTime(StringConcatenate(TimeYear(临_da_127),".",TimeMonth(临_da_127),".",TimeDay(临_da_127)," ",Limit_StartTime)) ;
-       总_da_66 = StringToTime(StringConcatenate(TimeYear(临_da_127),".",TimeMonth(临_da_127),".",TimeDay(临_da_127)," ",Limit_StopTime)) ;
-       if ( 总_da_65 <  总_da_66 && ( 临_da_127 < 总_da_63 || 临_da_127 > 总_da_66 ) )
+       EA_StartTime = StringToTime(StringConcatenate(TimeYear(临_da_127),".",TimeMonth(临_da_127),".",TimeDay(临_da_127)," ",Limit_StartTime)) ;
+       EA_StopTime = StringToTime(StringConcatenate(TimeYear(临_da_127),".",TimeMonth(临_da_127),".",TimeDay(临_da_127)," ",Limit_StopTime)) ;
+       if ( EA_StartTime <  EA_StopTime && ( 临_da_127 < 总_da_63 || 临_da_127 > EA_StopTime ) )
         {
         ObjectDelete("HLINE_LONG"); 
         ObjectDelete("HLINE_SHORT"); 
@@ -1674,7 +1673,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
         }
        else
         {
-        if ( 总_da_65 > 总_da_66 && 临_da_127 <  总_da_65 && 临_da_127 > 总_da_66 )
+        if ( EA_StartTime > EA_StopTime && 临_da_127 <  EA_StartTime && 临_da_127 > EA_StopTime )
          {
          ObjectDelete("HLINE_LONG"); 
          ObjectDelete("HLINE_SHORT"); 
@@ -1696,9 +1695,9 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
         {
         临_da_129 = TimeLocal();
         }
-       总_da_65 = StringToTime(StringConcatenate(TimeYear(临_da_129),".",TimeMonth(临_da_129),".",TimeDay(临_da_129)," ",Limit_StartTime)) ;
-       总_da_66 = StringToTime(StringConcatenate(TimeYear(临_da_129),".",TimeMonth(临_da_129),".",TimeDay(临_da_129)," ",Limit_StopTime)) ;
-       if ( 总_da_65 <  总_da_66 && ( 临_da_129 < 总_da_63 || 临_da_129 > 总_da_66 ) )
+       EA_StartTime = StringToTime(StringConcatenate(TimeYear(临_da_129),".",TimeMonth(临_da_129),".",TimeDay(临_da_129)," ",Limit_StartTime)) ;
+       EA_StopTime = StringToTime(StringConcatenate(TimeYear(临_da_129),".",TimeMonth(临_da_129),".",TimeDay(临_da_129)," ",Limit_StopTime)) ;
+       if ( EA_StartTime <  EA_StopTime && ( 临_da_129 < 总_da_63 || 临_da_129 > EA_StopTime ) )
         {
         ObjectDelete("HLINE_LONG"); 
         ObjectDelete("HLINE_SHORT"); 
@@ -1708,7 +1707,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
         }
        else
         {
-        if ( 总_da_65 > 总_da_66 && 临_da_129 <  总_da_65 && 临_da_129 > 总_da_66 )
+        if ( EA_StartTime > EA_StopTime && 临_da_129 <  EA_StartTime && 临_da_129 > EA_StopTime )
          {
          ObjectDelete("HLINE_LONG"); 
          ObjectDelete("HLINE_SHORT"); 
@@ -1721,7 +1720,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
          临_bo_130 = true;
         }}
         }
-       // Print("总_da_65=",总_da_65,"  总_da_66=",总_da_66,"  临_da_123=",临_da_123,"  总_da_63=",总_da_63,"  临_da_123=",临_da_123);
+       // Print("EA_StartTime=",EA_StartTime,"  EA_StopTime=",EA_StopTime,"  临_da_123=",临_da_123,"  总_da_63=",总_da_63,"  临_da_123=",临_da_123);
        if ( ( On_top_of_this_price_not_Buy_order==0.0 || ( 临_bo_128 && 子_in_8 >= 1 && buyReferencePrice<On_top_of_this_price_not_Buy_order ) || 子_in_8 == 0 || !(临_bo_130) ) )
         {
         临_in_131 = 0;
@@ -1840,9 +1839,9 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
         {
         临_da_138 = TimeLocal();
         }
-       总_da_65 = StringToTime(StringConcatenate(TimeYear(临_da_138),".",TimeMonth(临_da_138),".",TimeDay(临_da_138)," ",Limit_StartTime)) ;
-       总_da_66 = StringToTime(StringConcatenate(TimeYear(临_da_138),".",TimeMonth(临_da_138),".",TimeDay(临_da_138)," ",Limit_StopTime)) ;
-       if ( 总_da_65 <  总_da_66 && ( 临_da_138 < 总_da_63 || 临_da_138 > 总_da_66 ) )
+       EA_StartTime = StringToTime(StringConcatenate(TimeYear(临_da_138),".",TimeMonth(临_da_138),".",TimeDay(临_da_138)," ",Limit_StartTime)) ;
+       EA_StopTime = StringToTime(StringConcatenate(TimeYear(临_da_138),".",TimeMonth(临_da_138),".",TimeDay(临_da_138)," ",Limit_StopTime)) ;
+       if ( EA_StartTime <  EA_StopTime && ( 临_da_138 < 总_da_63 || 临_da_138 > EA_StopTime ) )
         {
         ObjectDelete("HLINE_LONG"); 
         ObjectDelete("HLINE_SHORT"); 
@@ -1852,7 +1851,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
         }
        else
         {
-        if ( 总_da_65 > 总_da_66 && 临_da_138 <  总_da_65 && 临_da_138 > 总_da_66 )
+        if ( EA_StartTime > EA_StopTime && 临_da_138 <  EA_StartTime && 临_da_138 > EA_StopTime )
          {
          ObjectDelete("HLINE_LONG"); 
          ObjectDelete("HLINE_SHORT"); 
@@ -1874,9 +1873,9 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
         {
         临_da_140 = TimeLocal();
         }
-       总_da_65 = StringToTime(StringConcatenate(TimeYear(临_da_140),".",TimeMonth(临_da_140),".",TimeDay(临_da_140)," ",Limit_StartTime)) ;
-       总_da_66 = StringToTime(StringConcatenate(TimeYear(临_da_140),".",TimeMonth(临_da_140),".",TimeDay(临_da_140)," ",Limit_StopTime)) ;
-       if ( 总_da_65 <  总_da_66 && ( 临_da_140 < 总_da_63 || 临_da_140 > 总_da_66 ) )
+       EA_StartTime = StringToTime(StringConcatenate(TimeYear(临_da_140),".",TimeMonth(临_da_140),".",TimeDay(临_da_140)," ",Limit_StartTime)) ;
+       EA_StopTime = StringToTime(StringConcatenate(TimeYear(临_da_140),".",TimeMonth(临_da_140),".",TimeDay(临_da_140)," ",Limit_StopTime)) ;
+       if ( EA_StartTime <  EA_StopTime && ( 临_da_140 < 总_da_63 || 临_da_140 > EA_StopTime ) )
         {
         ObjectDelete("HLINE_LONG"); 
         ObjectDelete("HLINE_SHORT"); 
@@ -1886,7 +1885,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
         }
        else
         {
-        if ( 总_da_65 > 总_da_66 && 临_da_140 <  总_da_65 && 临_da_140 > 总_da_66 )
+        if ( EA_StartTime > EA_StopTime && 临_da_140 <  EA_StartTime && 临_da_140 > EA_StopTime )
          {
          ObjectDelete("HLINE_LONG"); 
          ObjectDelete("HLINE_SHORT"); 
@@ -1909,9 +1908,9 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
          {
          临_da_142 = TimeLocal();
          }
-        总_da_65 = StringToTime(StringConcatenate(TimeYear(临_da_142),".",TimeMonth(临_da_142),".",TimeDay(临_da_142)," ",Limit_StartTime)) ;
-        总_da_66 = StringToTime(StringConcatenate(TimeYear(临_da_142),".",TimeMonth(临_da_142),".",TimeDay(临_da_142)," ",Limit_StopTime)) ;
-        if ( 总_da_65 <  总_da_66 && ( 临_da_142 < 总_da_63 || 临_da_142 > 总_da_66 ) )
+        EA_StartTime = StringToTime(StringConcatenate(TimeYear(临_da_142),".",TimeMonth(临_da_142),".",TimeDay(临_da_142)," ",Limit_StartTime)) ;
+        EA_StopTime = StringToTime(StringConcatenate(TimeYear(临_da_142),".",TimeMonth(临_da_142),".",TimeDay(临_da_142)," ",Limit_StopTime)) ;
+        if ( EA_StartTime <  EA_StopTime && ( 临_da_142 < 总_da_63 || 临_da_142 > EA_StopTime ) )
          {
          ObjectDelete("HLINE_LONG"); 
          ObjectDelete("HLINE_SHORT"); 
@@ -1921,7 +1920,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
          }
         else
          {
-         if ( 总_da_65 > 总_da_66 && 临_da_142 <  总_da_65 && 临_da_142 > 总_da_66 )
+         if ( EA_StartTime > EA_StopTime && 临_da_142 <  EA_StartTime && 临_da_142 > EA_StopTime )
           {
           ObjectDelete("HLINE_LONG"); 
           ObjectDelete("HLINE_SHORT"); 
@@ -1946,9 +1945,9 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
          {
          临_da_144 = TimeLocal();
          }
-        总_da_65 = StringToTime(StringConcatenate(TimeYear(临_da_144),".",TimeMonth(临_da_144),".",TimeDay(临_da_144)," ",Limit_StartTime)) ;
-        总_da_66 = StringToTime(StringConcatenate(TimeYear(临_da_144),".",TimeMonth(临_da_144),".",TimeDay(临_da_144)," ",Limit_StopTime)) ;
-        if ( 总_da_65 <  总_da_66 && ( 临_da_144 < 总_da_63 || 临_da_144 > 总_da_66 ) )
+        EA_StartTime = StringToTime(StringConcatenate(TimeYear(临_da_144),".",TimeMonth(临_da_144),".",TimeDay(临_da_144)," ",Limit_StartTime)) ;
+        EA_StopTime = StringToTime(StringConcatenate(TimeYear(临_da_144),".",TimeMonth(临_da_144),".",TimeDay(临_da_144)," ",Limit_StopTime)) ;
+        if ( EA_StartTime <  EA_StopTime && ( 临_da_144 < 总_da_63 || 临_da_144 > EA_StopTime ) )
          {
          ObjectDelete("HLINE_LONG"); 
          ObjectDelete("HLINE_SHORT"); 
@@ -1958,7 +1957,7 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
          }
         else
          {
-         if ( 总_da_65 > 总_da_66 && 临_da_144 <  总_da_65 && 临_da_144 > 总_da_66 )
+         if ( EA_StartTime > EA_StopTime && 临_da_144 <  EA_StartTime && 临_da_144 > EA_StopTime )
           {
           ObjectDelete("HLINE_LONG"); 
           ObjectDelete("HLINE_SHORT"); 
@@ -1980,41 +1979,41 @@ extern string EA_StopTime="24:00"  ;   //EA结束时间
          {
          临_da_146 = TimeLocal();
          }
-        总_da_65 = StringToTime(StringConcatenate(TimeYear(临_da_146),".",TimeMonth(临_da_146),".",TimeDay(临_da_146)," ",Limit_StartTime)) ;
-        总_da_66 = StringToTime(StringConcatenate(TimeYear(临_da_146),".",TimeMonth(临_da_146),".",TimeDay(临_da_146)," ",Limit_StopTime)) ;
-        if ( 总_da_65 <  总_da_66 && ( 临_da_146 < 总_da_63 || 临_da_146 > 总_da_66 ) )
+        EA_StartTime = StringToTime(StringConcatenate(TimeYear(临_da_146),".",TimeMonth(临_da_146),".",TimeDay(临_da_146)," ",Limit_StartTime)) ;
+        EA_StopTime = StringToTime(StringConcatenate(TimeYear(临_da_146),".",TimeMonth(临_da_146),".",TimeDay(临_da_146)," ",Limit_StopTime)) ;
+        if ( EA_StartTime <  EA_StopTime && ( 临_da_146 < 总_da_63 || 临_da_146 > EA_StopTime ) )
          {
          ObjectDelete("HLINE_LONG"); 
          ObjectDelete("HLINE_SHORT"); 
          ObjectDelete("HLINE_LONGII"); 
          ObjectDelete("HLINE_SHORTII"); 
-         临_bo_147 = false;
+         EA_in_working_time = false;
          }
         else
          {
-         if ( 总_da_65 > 总_da_66 && 临_da_146 <  总_da_65 && 临_da_146 > 总_da_66 )
+         if ( EA_StartTime > EA_StopTime && 临_da_146 <  EA_StartTime && 临_da_146 > EA_StopTime )
           {
           ObjectDelete("HLINE_LONG"); 
           ObjectDelete("HLINE_SHORT"); 
           ObjectDelete("HLINE_LONGII"); 
           ObjectDelete("HLINE_SHORTII"); 
-          临_bo_147 = false;
+          EA_in_working_time = false;
           }
          else
           {
-          临_bo_147 = true;
+          EA_in_working_time = true;
          }}
          }
-        // Print("总_da_65=",总_da_65,"  总_da_66=",总_da_66,"  临_da_123=",临_da_123,"  总_da_63=",总_da_63,"  临_da_123=",临_da_123);
-        if ( ( On_under_of_this_price_not_Sell_order==0.0 || ( 临_bo_145 && 子_in_9 >= 1 && buyReferencePrice>On_under_of_this_price_not_Sell_order ) || 子_in_9 == 0 || !(临_bo_147) ) )
+        // Print("EA_StartTime=",EA_StartTime,"  EA_StopTime=",EA_StopTime,"  临_da_123=",临_da_123,"  总_da_63=",总_da_63,"  临_da_123=",临_da_123);
+        if ( ( On_under_of_this_price_not_Sell_order==0.0 || ( 临_bo_145 && 子_in_9 >= 1 && buyReferencePrice>On_under_of_this_price_not_Sell_order ) || 子_in_9 == 0 || !(EA_in_working_time) ) )
          {
          临_in_148 = 1;
          临_in_149 = Magic;
          临_in_150 = 0;
          临_in_151 = 0;
-         for (临_in_152 = OrdersTotal() - 1 ; 临_in_152 >= 0 ; 临_in_152=临_in_152 - 1)
+         for (i = OrdersTotal() - 1 ; i >= 0 ; i=i - 1)
           {
-          if ( !(OrderSelect(临_in_152,SELECT_BY_POS,MODE_TRADES)) || Symbol() != OrderSymbol() || OrderMagicNumber() != 临_in_149 || OrderTicket() <= 临_in_151 || OrderType() != 临_in_148 )   continue;
+          if ( !(OrderSelect(i,SELECT_BY_POS,MODE_TRADES)) || Symbol() != OrderSymbol() || OrderMagicNumber() != 临_in_149 || OrderTicket() <= 临_in_151 || OrderType() != 临_in_148 )   continue;
           临_in_151 = OrderTicket();
           临_in_150 = OrderOpenTime();
           }
