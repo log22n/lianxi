@@ -4,7 +4,7 @@
 //|                                 https://tradesmartfxtools.online |
 //+------------------------------------------------------------------+
 #property copyright " Copyright 2024, Trade Smart fx Tools"
-#property link      " https://tradesmartfxtools.online"
+#property link      " https://www.mql5.com/en/code/47802"
 #property version   "1.00"
 #property strict
 
